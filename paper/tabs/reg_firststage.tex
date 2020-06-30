@@ -1,0 +1,21 @@
+{
+\def\sym#1{\ifmmode^{#1}\else\(^{#1}\)\fi}
+\begin{tabular}{l*{6}{c}}
+\hline\hline
+            &\multicolumn{1}{c}{(1)}        &\multicolumn{1}{c}{(2)}        &\multicolumn{1}{c}{(3)}        &\multicolumn{1}{c}{(4)}        &\multicolumn{1}{c}{(5)}        &\multicolumn{1}{c}{(6)}        \\
+\hline
+Instrument  &        2.25\sym{**}&        1.22\sym{**}&        2.18\sym{**}&        0.72\sym{**}&        1.05\sym{**}&        0.45\sym{**}\\
+            &      (0.41)        &     (0.059)        &      (0.46)        &      (0.12)        &      (0.23)        &      (0.14)        \\
+[1em]
+\hline
+Year FE     &          Div        &          No        &         Year        &          Div        &          State        &          Div        \\
+CZ FE       &          Yes        &       No             &          Yes        &          Yes        &          Yes        &          Yes        \\
+Weighted    &     Yes        &           No         &     Yes        &       No             &     Yes        &     Yes        \\
+Time Trend    &     No        &           No         &     No        &       No             &     No        &     Yes        \\
+\hline
+$\bar{R}^2$ &        0.78        &        0.15        &        0.72        &        0.78        &        0.87        &        0.79        \\
+$N$         &        5672        &        5672        &        5672        &        5672        &        5672        &        5672        \\
+\hline\hline
+\multicolumn{7}{p{0.6\linewidth}}{\footnotesize Standard errors in parentheses.  First stage OLS estimates for opioid prescription rate presented.  Instrument is elderly share in 2003 $\times$ post-2006.  Year FE row denotes whether the specification included no year FEs, year FEs, division $\times$ year FEs, or state $\times$ year FEs.  CZ FE row denotes whether specification included commuting zone fixed effects.  Weighting (when used) by population in 2003 and equal across years.  Time trend is elderly share in 2003 $\times$ year.  Standard errors clustered by CZ. \sym{*} \(p<0.05\), \sym{**} \(p<0.01\)}\\
+\end{tabular}
+}

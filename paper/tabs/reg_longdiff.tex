@@ -1,0 +1,16 @@
+{
+\def\sym#1{\ifmmode^{#1}\else\(^{#1}\)\fi}
+\begin{tabular}{l*{4}{c}}
+\hline\hline
+            &\multicolumn{1}{c}{(1)}&\multicolumn{1}{c}{(2)}&\multicolumn{1}{c}{(3)}&\multicolumn{1}{c}{(4)}\\
+            &\multicolumn{1}{c}{LFP}&\multicolumn{1}{c}{Unemp.}&\multicolumn{1}{c}{Log Income}&\multicolumn{1}{c}{No Income}\\
+\hline
+Opioid Rate &       $-0.11$\sym{**}&       0.052\sym{**}&        0.22\sym{*} &       0.065\sym{**}\\
+            &     (0.033)        &     (0.016)        &     (0.095)        &     (0.022)        \\
+\hline
+$\bar{R}^2$ &       $-1.35$        &        0.72        &        0.73        &        0.66        \\
+$N$         &        1418        &        1418        &        1418        &        1418        \\
+\hline\hline
+\multicolumn{5}{p{0.55\linewidth}}{\footnotesize Standard errors in parentheses.  All regressions include division-by-year and CZ fixed effects. Weighted by population.  Standard errors are clustered by CZ.  Outcomes for people aged 25--54.  \sym{*} \(p<0.05\), \sym{**} \(p<0.01\)}\\
+\end{tabular}
+}

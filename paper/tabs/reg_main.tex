@@ -1,0 +1,39 @@
+{
+\def\sym#1{\ifmmode^{#1}\else\(^{#1}\)\fi}
+\begin{tabular}{l*{4}{c}}
+\hline\hline
+            &\multicolumn{1}{c}{(1)}&\multicolumn{1}{c}{(2)}&\multicolumn{1}{c}{(3)}&\multicolumn{1}{c}{(4)}\\
+            &\multicolumn{1}{c}{16--64}&\multicolumn{1}{c}{16--54}&\multicolumn{1}{c}{25--64}&\multicolumn{1}{c}{25--54}\\
+\hline\hline
+Labor Force Part.\\
+\hline
+Opioid Rate &      $-0.024$        &      $-0.038$\sym{*} &      $-0.050$\sym{*} &      $-0.069$\sym{**}\\
+            &     (0.018)        &     (0.018)        &     (0.023)        &     (0.025)        \\
+\hline
+$\bar{R}^2$ &        0.40        &        0.38        &        0.45        &        0.43        \\
+\hline\hline
+Unemployment \\
+\hline
+Opioid Rate &       0.023        &       0.031\sym{*} &       0.025\sym{*} &       0.034\sym{**}\\
+            &     (0.015)        &     (0.015)        &     (0.012)        &     (0.012)        \\
+\hline
+$\bar{R}^2$ &        0.84        &        0.84        &        0.85        &        0.84        \\
+\hline\hline
+Log Real Income \\
+\hline
+Opioid Rate &       0.084        &       0.062        &       0.029        &       0.023        \\
+            &     (0.050)        &     (0.048)        &     (0.043)        &     (0.046)        \\
+\hline
+$\bar{R}^2$ &        0.94        &        0.92        &        0.96        &        0.95        \\
+\hline\hline
+\% w/ No Income \\
+\hline
+Opioid Rate &     $-0.0030$        &       0.012        &      0.0072        &       0.027\sym{*} \\
+            &     (0.015)        &     (0.016)        &     (0.013)        &     (0.014)        \\
+\hline
+$\bar{R}^2$ &        0.81        &        0.82        &        0.68        &        0.66        \\
+$N$         &        5672        &        5672        &        5672        &        5672        \\
+\hline\hline
+\multicolumn{5}{p{0.55\linewidth}}{\footnotesize Standard errors in parentheses.  Regressions include division-by-year and CZ FEs.  Weighted by population.  Standard errors clustered by CZ.  \sym{*} \(p<0.05\), \sym{**} \(p<0.01\)}\\
+\end{tabular}
+}
