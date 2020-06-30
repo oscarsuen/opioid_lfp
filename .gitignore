@@ -1,1 +1,4 @@
 data/acs/raw/usa_00011.dta
+paper/paper.*
+!paper/paper.tex
+!paper/paper.pdf

@@ -3,6 +3,7 @@ Using the differential impact of the introduction of Medicare Part D as an instr
 There is no significant effect on incomes for the employed, but there is an increase in the percentage of people earning zero income.  Moreover, effects are stronger for men than for women, and are concentrated among those aged 25--44.  Finally, an event study suggests that effects take time to materialize.
 ## Data Sources
 - Download `data/acs/raw/usa_00011.dta` from [IPUMS](https://usa.ipums.org/usa/)
+- Somehow get `data/pop/raw/coest00intalldata.dta`
 ## TODO
 - [ ] Paper fixes
     - [ ] Cleveland Fed paper
