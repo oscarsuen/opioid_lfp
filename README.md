@@ -10,7 +10,7 @@ Using the differential impact of the introduction of Medicare Part D as an instr
 - [ ] Code fixes
     - [ ] Rework entire filestructure
     - [ ] Maybe use a `Makefile`
-    - [ ] Automate everything, epsecially `TeX` problems in tables
+    - [ ] Automate everything, epsecially `LaTeX` problems in tables
 - [ ] Paper fixes
     - [ ] Cleveland Fed paper
     - [ ] Add policy implications (male/female resilience)
@@ -26,10 +26,3 @@ Using the differential impact of the introduction of Medicare Part D as an instr
     - [ ] Disability insurance
     - [ ] Rework Summary table
     - [ ] Treat alternative "prime-aged" definitions as robustness tests
-- [ ] Next Steps
-    - [ ] post to own website
-    - [ ] post to SSRN
-    - [ ] send to Gruber, Autor, Finkelstein, Matt Notowidigdo
-    - [ ] AER: Insights, AEJ: Policy
-    - [ ] Set up meeting with Simon
-    - [ ] Reply to Amy
