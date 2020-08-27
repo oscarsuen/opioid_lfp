@@ -1,9 +1,9 @@
 /paper/paper.*
 !/paper/paper.tex
 !/paper/paper.pdf
-/paper/paper_old.tex
 _*
 .venv
-/out/figs/old/
-/out/tabs/old/
 usa_00011.dta
+/*.log
+/log/
+/code/census_api_key.txt

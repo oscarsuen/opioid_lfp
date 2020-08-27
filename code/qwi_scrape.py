@@ -1,44 +1,69 @@
 import os
+import json
 import requests
 
-API_KEY = "700e5d587406baa97aecd07e168f56fb3a3a37e2"
+OUT = "data/raw/qwi_json/"
+
+def get_api_key(filename="code/census_api_key.txt"):
+    with open(filename, "r") as f:
+        return f.read().strip()
 
 def scrape(statefips=None):
     if statefips is None:
         statefips = get_statefips()
-    payload = {"get": "sex,agegrp,Emp,EarnS",
+    payload = {"get": "sex,agegrp,Emp,EarnBeg",
                "for": "county:*",
                "time":"from 1990-Q1 to 2019-Q4",
                "in":  "state:00"}
-    payload["key"] = API_KEY
+    url_head = "https://api.census.gov/data/timeseries/qwi/sa"
+    payload["key"] = get_api_key()
     for statefip in statefips:
         print(statefip)
         payload["in"] = "state:" + statefip
-        r = requests.get("https://api.census.gov/data/timeseries/qwi/sa", params=payload)
-        with open("json/" + statefip + ".json", "w") as f:
+        if statefip == "48": # Texas
+            for sex in range(3):
+                payload["sex"] = str(sex)
+                r = requests.get(url_head, params=payload)
+                with open(OUT + statefip + str(sex) + ".json", "w") as f:
+                    f.write(r.text)
+            del payload["sex"]
+            continue
+        r = requests.get(url_head, params=payload)
+        with open(OUT + statefip + ".json", "w") as f:
             f.write(r.text)
-        print(r.url)
 
 def get_statefips():
-    with open("code/statefips.txt", "r") as f:
+    with open("data/raw/statefips.txt", "r") as f:
         statefips = [l.strip() for l in f]
     return statefips
 
-def errors():
-    return [statefip for statefip in get_statefips() if os.path.getsize("json/" + statefip + ".json") < 1024]
+def errors(size=1024):
+    rtn = [statefip for statefip in get_statefips() if statefip != "48" and os.path.getsize(OUT + statefip + ".json") < size]
+    if any(os.path.getsize(OUT + "48" + str(sex) + ".json") < size for sex in range(3)):
+        rtn.append("48")
+    return rtn
+
+def fix_texas():
+    jsons = []
+    for sex in range(3):
+        with open(OUT + "48" + str(sex) + ".json", "r") as f:
+            jsons.append(json.load(f))
+    rtn = [jsons[0][0][:5] + jsons[0][0][6:]]
+    for sex in range(3):
+        rtn += [line[:5] + line[6:] for line in jsons[sex][1:]]
+    s = json.dumps(rtn, separators=(",", ":"))
+    with open(OUT + "48.json", "w") as f:
+        f.write(s.replace("],", "],\n"))
+    for sex in range(3):
+        os.remove(OUT + "48" + str(sex) + ".json")
 
 if __name__ == "__main__":
-    # scrape(errors())
-    payload = {"get": "sex,agegrp,Emp,EarnS",
-               "for": "county:*",
-               "time":"from 1990-Q1 to 2019-Q4",
-               "in":  "state:00"}
-    with open("code/census_api_key.txt", "r") as f:
-        payload["key"] = f.read().strip()
-    statefip = '48'
-    payload["in"] = "state:" + statefip
-    for sex in range(3):
-        payload["sex"] = str(sex)
-        r = requests.get("https://api.census.gov/data/timeseries/qwi/sa", params=payload)
-        with open("json/" + statefip + str(sex) + ".json", "w") as f:
-            f.write(r.text)
+    scrape()
+    retry_limit = 20
+    for _ in range(retry_limit):
+        e = errors()
+        if e:
+            scrape(e)
+        else:
+            break
+    fix_texas()
