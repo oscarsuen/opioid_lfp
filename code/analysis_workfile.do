@@ -24,16 +24,15 @@ global dta  $root/data/dta
 log using $log/analysis_workfile_`daterun'.log, text replace
 
 // Input filenames
-local panel_yearcz acs_yearcz.dta
-local czpop pop_yearcz.dta
-local czwt wt_yearcz.dta
-local opioid_rate opioid_yearcz.dta
+local qwi_quarter qwi_qtrcz.dta
+local opioid_quarter opioid_qtrcz.dta
 local cz_elderly cz_elderly.dta
 local cz2state cz2state_crosswalk.dta
 local state2reg state2reg_crosswalk.dta
 
 // Output filenames
-local workfile workfile.dta
+local workfile_quarter workfile_quarter.dta
+local workfile_year workfile_year.dta
 local workfile_copy _workfile_`daterun'.dta
 
 ********************************
@@ -42,52 +41,51 @@ local workfile_copy _workfile_`daterun'.dta
 
 * Generate Workfile
 ********************************
-use $acs/`panel_yearcz', clear
-rename popwt popwtacs
+use $dta/`opioid_quarter', clear
 
-foreach file in $pop/`czpop' $pop/`czwt' $arcos/`opioid_rate' {
-    merge 1:1 year cz using `file'
-    tab year if _merge==1
-    tab year if _merge==2
-    keep if _merge==3
-    drop _merge
-}
-save $dta/`workfile', replace
+merge 1:1 cz quarter using $dta/`qwi_quarter'
+tab quarter _merge if _merge != 3
+drop _merge // keeping all obs
 
-use $pop/`cz_elderly', clear
-rename elderly_share sh_elderly03
-rename popwt popwt03
-save $dta/temp.dta, replace
+merge m:1 cz using $dta/`cz_elderly'
+tab quarter _merge if _merge != 3
+assert _merge == 3
+drop _merge
 
-use $dta/`workfile', clear
-merge m:1 cz using $dta/temp.dta
-assert _merge==3
+merge m:1 cz using $dta/`cz2state'
+assert _merge == 3
+drop _merge
+
+merge m:1 state using $dta/`state2reg'
+tab state if _merge != 3
+keep if _merge == 3
 drop _merge
 
 rename percap opioid_rate
+rename elderly_share sh_elderly03
 
-merge m:1 cz using $crosswalks/`cz2state'
-drop if _merge==2
-assert _merge==3
-drop _merge
+generate instrument = sh_elderly03 * (quarter >= tq(2006q1))
+egen stateqtr = group(state quarter)
+egen divqtr = group(division quarter)
+generate int year = yofd(dofq(quarter))
+xtset cz quarter, quarterly
 
-merge m:1 state using $crosswalks/`state2reg'
-drop if _merge==2
-assert _merge==3
-drop _merge
+// TODO: maybe add epop_a_all > 1
+generate _epop_exists = epop_a_all != . & epop_a_all != 0
+generate _opioid_exists = opioid_rate != . & opioid_rate != 0
+by cz: egen _epop_counts = sum(_epop_exists)
+by cz: egen _opioid_counts = sum(_opioid_exists)
+generate consistent_sample = _epop_counts == _opioid_counts
+drop _*
 
-generate instrument = sh_elderly03 * (year >= 2006)
-
-egen stateyear = group(state year)
-egen divisionyear = group(division year)
-
-xtset cz year, yearly
-
-save $dta/`workfile', replace
-erase $dta/temp.dta
-
-use $dta/`workfile', clear
+save $dta/`workfile_quarter', replace
 save $dta/`workfile_copy', replace
 
+collapse (sum) grams opioid_rate consistent_sample (mean) epop_* realinc_* lgrlinc_* (first) sh_elderly03 popwt03 state region division instrument, by(cz year)
+egen stateyr = group(state year)
+egen divyr = group(division year)
+replace consistent_sample = consistent_sample == 4
+xtset cz year, yearly
+save $dta/`workfile_year', replace
 
 log close

@@ -10,21 +10,33 @@ Using the differential impact of the introduction of Medicare Part D as an instr
 ## Dependencies
 - Python 3
     - `requests`
+- `pdf2text`
+- Stata
+    - `estout`
+    - `ftools`
+    - `reghdfe`
+    - `ivreghdfe`
+    - `estwrite`
+    - `ivreg2`
+    - `ranktest`
 ## TODO
 - [ ] Github fixes
     - [ ] LFS track `data/acs/raw/usa_00011.gz`
 - [ ] Code fixes
     - [x] Rework entire filestructure
     - [x] Maybe use a `Makefile`
+    - [ ] Find sources for files
     - [ ] Automate everything, epsecially `LaTeX` problems in tables
-    - [ ] Quarterly opioids
+    - [x] Quarterly opioids
     - [ ] Check if opioid panel constructed correctly from pdfs
-    - [ ] Look at how qwi earnings are weighted (numbers don't line up)
+    - [ ] Look at how QWI earnings are weighted (numbers don't line up)
     - [ ] Population back to 1990
     - [ ] Check ZIP to County crosswalk
     - [ ] Replicate ACS
+    - [ ] Check omitted `divyr` categories
 - [ ] Paper fixes
     - [ ] High exposure vs low exposure
+    - [ ] DWH endogeneity test?
     - [ ] Cleveland Fed paper
     - [ ] Add policy implications (male/female resilience)
     - [ ] Maybe cite Notowidigdo

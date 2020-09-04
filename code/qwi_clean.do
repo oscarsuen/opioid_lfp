@@ -23,6 +23,7 @@ log using $log/qwi_clean_`daterun'.log, text replace
 
 // Input filenames
 local raw_csv qwi.csv
+local inflation cpi_quarter.dta
 local cty2cz cty2cz_crosswalk.dta
 local czpop pop_yearcz.dta
 
@@ -63,6 +64,7 @@ generate sex_str = ""
 replace sex_str = "_a" if sex == 0
 replace sex_str = "_m" if sex == 1
 replace sex_str = "_f" if sex == 2
+assert sex_str != ""
 drop sex
 
 generate age_str = ""
@@ -75,10 +77,11 @@ replace age_str = "_3544" if agegrp == "A05"
 replace age_str = "_4554" if agegrp == "A06"
 replace age_str = "_5564" if agegrp == "A07"
 replace age_str = "_6599" if agegrp == "A08"
+assert age_str != ""
 drop agegrp
 
 generate grp_str = sex_str + age_str
-drop sex_str age_str
+keep county quarter grp_str emp realinc lgrlinc
 reshape wide emp realinc lgrlinc, i(county quarter) j(grp_str) string
 
 // County changes
@@ -89,8 +92,7 @@ replace county="02280" if county=="02195"
 replace county="02201" if county=="02198"
 replace county="02280" if county=="02275" // moved new county into old
 
-collapse (sum) emp_* realinc_* lgrlinc_*, by(county quarter)
-xtset county quarter
+// collapse (sum) emp_* (mean) realinc_* lgrlinc_*, by(county quarter)
 
 local sexes a m f
 foreach sex in `sexes' {
@@ -105,10 +107,10 @@ local vars realinc lgrlinc
 foreach var in `vars' {
     foreach sex in `sexes' {
         generate `var'_`sex'_2554 = (`var'_`sex'_2534*emp_`sex'_2534 + `var'_`sex'_3544*emp_`sex'_3544 + `var'_`sex'_4554*emp_`sex'_4554) / emp_`sex'_2554
-        generate `var'_`sex'_1524 = (`var'_`sex'_1418*emp_`sex'_1418 + `var'_`sex'_1921*emp_`sex'_1921 + `var'_`sex'_2224*emp_`sex'_2224) / emp_`sex'_1424
+        generate `var'_`sex'_1524 = (`var'_`sex'_1418*emp_`sex'_1418 + `var'_`sex'_1921*emp_`sex'_1921 + `var'_`sex'_2224*emp_`sex'_2224) / emp_`sex'_1524
         generate `var'_`sex'_1554 = (`var'_`sex'_1524*emp_`sex'_1524 + `var'_`sex'_2554*emp_`sex'_2554) / emp_`sex'_2554
         generate `var'_`sex'_2564 = (`var'_`sex'_2554*emp_`sex'_2554 + `var'_`sex'_5564*emp_`sex'_5564) / emp_`sex'_2564
-        generate `var'_`sex'_1564 = (`var'_`sex'_1524*emp_`sex'_1524 + `var'_`sex'_2554*emp_`sex'_2554 + `var'_`sex'_5564*emp_`sex'_5564) / emp_`sex'_1464
+        generate `var'_`sex'_1564 = (`var'_`sex'_1524*emp_`sex'_1524 + `var'_`sex'_2554*emp_`sex'_2554 + `var'_`sex'_5564*emp_`sex'_5564) / emp_`sex'_1564
     }
 }
 
@@ -123,7 +125,8 @@ drop if _merge == 2
 assert _merge == 3
 drop _merge
 
-collapse (mean) emp_* realinc_* lgrlinc_*, by(cz quarter)
+// TODO: mean for income is wrong
+collapse (sum) emp_* (mean) realinc_* lgrlinc_*, by(cz quarter)
 
 generate year = yofd(dofq(quarter))
 drop if year < 2000 // TODO: extend analysis

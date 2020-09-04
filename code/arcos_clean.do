@@ -49,6 +49,7 @@ reshape long q, i(year zip drugcode) j(qtr)
 rename q weight
 generate int quarter = yq(year, qtr)
 format quarter %tq
+drop year
 
 // TODO: investigate zips
 // Puerto Rico
@@ -116,18 +117,21 @@ collapse (sum) grams [pw=gamma], by(cz quarter)
 
 save $dta/`raw_panel_count', replace
 
-merge 1:1 year cz using $dta/`czpop'
+generate int year = yofd(dofq(quarter))
+joinby year cz using $dta/`czpop', unmatched(both)
 tab quarter _merge if _merge != 3
 keep if _merge == 3
 generate percap = grams/pop_a_all
 save $dta/`temp', replace
 keep quarter cz percap grams
+xtset cz quarter
 save $dta/`opioids_qtr', replace
 
 use $dta/`temp', clear
 collapse (sum) grams (first) pop_a_all, by(cz year)
 generate percap = grams/pop_a_all
 keep year cz percap grams
+xtset cz year
 save $dta/`opioids_year', replace
 erase $dta/`temp'
 

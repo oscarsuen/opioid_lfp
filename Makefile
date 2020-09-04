@@ -46,18 +46,22 @@ $(CROSSWALKS): $(CODE)/aux_crosswalks.do $(addprefix $(RAW)/,$(CROSSWALK_IN)) $(
 CZPOPS = $(DTA)/pop_yearcz.dta $(DTA)/wt_yearcz.dta $(DTA)/cz_elderly.dta
 $(CZPOPS): $(CODE)/aux_czpop.do $(DTA)/pop_yearcty.dta $(DTA)/cty2cz_crosswalk.dta
 
-WF_IN = acs_yearcz pop_yearcz wt_yearcz opioid_rate cz_elderly cz2state_crosswalk state2reg_crosswalk
+WF_IN = qwi_qtrcz opioid_qtrcz cz_elderly cz2state_crosswalk state2reg_crosswalk
 WORKFILE_IN = $(WF_IN:%=$(DTA)/%.dta)
-$(DTA)/workfile.dta: $(CODE)/analysis_workfile.do $(WORKFILE_IN)
+WORKFILE_OUT = $(DTA)/workfile_quarter.dta $(DTA)/workfile_year.dta
+$(WORKFILE_OUT): $(CODE)/analysis_workfile.do $(WORKFILE_IN)
 
-$(OUT)/estimates.sters: $(CODE)/analysis_regressions.do $(DTA)/workfile.dta
-	$(STATA-RUN)
+$(OUT)/estimates.sters: $(CODE)/analysis_regressions.do $(WORKFILE_OUT)
+	$(STATA_RUN)
+
+$(FIGS)/event_%.pdf: $(CODE)/analysis_event.do $(WORKFILE_OUT)
+	$(STATA_RUN)
 
 $(TABS)/main_%.tex: $(CODE)/analysis_tables.do $(OUT)/estimates.sters
-	$(STATA-RUN)
+	$(STATA_RUN)
 
 $(FIGS)/binscatter.pdf: $(CODE)/analysis_binscatter.do $(DTA)/workfile.dta
-	$(STATA-RUN)
+	$(STATA_RUN)
 
 $(DTA)/opioid_yearcz.dta $(DTA)/opioid_qtrcz.dta: $(CODE)/arcos_clean.do $(RAW)/prescriptions.csv $(DTA)/zip2cz_crosswalk.dta $(DTA)/pop_yearcz.dta
 
@@ -98,3 +102,5 @@ $(QWI_JSONS): $(CODE)/qwi_scrape.py $(RAW)/statefips.txt
 
 $(RAW)/qwi.csv: $(CODE)/qwi_convert.py $(QWI_JSONS) $(RAW)/statefips.txt
 	python3 $<
+
+$(DTA)/qwi_yearcz.dta $(DTA)/qwi_qtrcz.dta: $(CODE)/qwi_clean.do $(RAW)/qwi.csv $(DTA)/cpi_quarter.dta $(DTA)/cty2cz_crosswalk.dta $(DTA)/pop_yearcz.dta

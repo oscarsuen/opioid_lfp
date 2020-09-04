@@ -1,0 +1,8 @@
+data/raw/*.json filter=lfs diff=lfs merge=lfs -text
+data/raw/usa_00011.dta.gz filter=lfs diff=lfs merge=lfs -text
+data/dta/*.dta filter=lfs diff=lfs merge=lfs -text
+data/raw/cc-est2019-alldata.csv filter=lfs diff=lfs merge=lfs -text
+data/raw/co-est00int-agesex-5yr.csv filter=lfs diff=lfs merge=lfs -text
+data/raw/prescriptions.csv filter=lfs diff=lfs merge=lfs -text
+data/raw/qwi.csv filter=lfs diff=lfs merge=lfs -text
+data/raw/arcos_pdf/*.pdf filter=lfs diff=lfs merge=lfs -text
