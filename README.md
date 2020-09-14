@@ -5,13 +5,11 @@ Using the differential impact of the introduction of Medicare Part D as an instr
 - `usa_00011.dta.gz`
     - Source: [IPUMS](https://usa.ipums.org/usa/)
     - Used for ACS labor market variables
-- `zipcty.csv`, `pumacty.csv`
-    - Source: [Geocorr 2000](http://mcdc.missouri.edu/applications/geocorr2000.html)
 - `census_api_key.txt`
     - Place this in the `code` folder for `qwi_scrape.py`
     - Request a key from [this link](https://api.census.gov/data/key_signup.html).
 
-Other sources can be found in the Makefile
+Other sources can be found in the Makefile.
 
 ## Dependencies
 - Python 3
@@ -32,14 +30,14 @@ Other sources can be found in the Makefile
 - [ ] Code fixes
     - [x] Rework entire filestructure
     - [x] Maybe use a `Makefile`
-    - [ ] Find sources for files
+    - [x] Find sources for files
     - [ ] Automate everything, epsecially `LaTeX` problems in tables
     - [x] Quarterly opioids
     - [ ] Check if opioid panel constructed correctly from pdfs
     - [ ] `epop_*_*` not constructed correctly
     - [ ] Look at how QWI earnings are weighted (numbers don't line up)
     - [ ] Population back to 1990
-    - [ ] Check ZIP to County crosswalk
+    - [x] Check ZIP to County crosswalk
     - [ ] Replicate ACS
     - [ ] Check omitted `divyr` categories
     - [ ] Coefficient on `2007q4`

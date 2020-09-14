@@ -1,5 +1,5 @@
 "state","puma5","county","stab","cntyname","pop2k","afact"
-"FIPS state","puma5","county","State Postal Code","cntyname","Total Pop, 2000 census","puma5 to county alloc factor"
+"FIPS state","puma5","county","State Postal Code","cntyname","Total Pop, 2000 census","puma5 to county allocation factor"
 "01","00100","01033","AL","Colbert AL",54984,0.385 
 "01","00100","01077","AL","Lauderdale AL",87966,0.615 
 "01","00200","01089","AL","Madison AL",157952,1 
@@ -3354,7 +3354,7 @@
 "46","00200","46095","SD","Mellette SD",2083,0.02 
 "46","00200","46105","SD","Perkins SD",3363,0.033 
 "46","00200","46107","SD","Potter SD",2693,0.026 
-"46","00200","46113","SD","Shannon SD D)",12466,0.123 
+"46","00200","46113","SD","Shannon SD (D)",12466,0.123 
 "46","00200","46121","SD","Todd SD",9050,0.089 
 "46","00200","46137","SD","Ziebach SD",2519,0.025 
 "46","00300","46005","SD","Beadle SD",17023,0.163 
@@ -3972,7 +3972,7 @@
 "51","01700","51023","VA","Botetourt VA",30496,0.262 
 "51","01700","51161","VA","Roanoke VA",85778,0.738 
 "51","01800","51009","VA","Amherst VA",31894,0.148 
-"51","01800","51019","VA","Bedford VA  (R)",60371,0.281 
+"51","01800","51019","VA","Bedford VA (R)",60371,0.281 
 "51","01800","51031","VA","Campbell VA",51078,0.238 
 "51","01800","51515","VA","Bedford city VA (D)",6299,0.029 
 "51","01800","51680","VA","Lynchburg city VA",65269,0.304 

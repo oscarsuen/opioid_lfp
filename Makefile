@@ -44,6 +44,9 @@ $(RAW)/ctycz.xls:
 $(RAW)/statereg.xls:
 	curl https://www2.census.gov/programs-surveys/popest/geographies/2011/state-geocodes-v2011.xls -o $@
 
+$(RAW)/zipcty.csv $(RAW)/pumacty.csv: $(CODE)/aux_getcrosswalks.py
+	python3 $@
+
 CROSSWALK_OUT = zip2cty puma2cty cty2cz puma2cz zip2cz state2reg cz2state
 CROSSWALKS = $(CROSSWALK_OUT:%=$(DTA)/%_crosswalk.dta)
 CROSSWALK_IN = zipcty.csv ctycz.xls pumacty.csv statereg.xls 
