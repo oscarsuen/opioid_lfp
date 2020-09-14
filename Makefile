@@ -38,6 +38,12 @@ $(RAW)/co-est00int-agesex-5yr.csv:
 $(RAW)/cc-est2019-alldata.csv:
 	curl https://www2.census.gov/programs-surveys/popest/datasets/2010-2019/counties/asrh/cc-est2019-alldata.csv -o $@
 
+$(RAW)/ctycz.xls:
+	curl https://www.ers.usda.gov/webdocs/DataFiles/48457/cz00_eqv_v1.xls -o $@
+
+$(RAW)/statereg.xls:
+	curl https://www2.census.gov/programs-surveys/popest/geographies/2011/state-geocodes-v2011.xls -o $@
+
 CROSSWALK_OUT = zip2cty puma2cty cty2cz puma2cz zip2cz state2reg cz2state
 CROSSWALKS = $(CROSSWALK_OUT:%=$(DTA)/%_crosswalk.dta)
 CROSSWALK_IN = zipcty.csv ctycz.xls pumacty.csv statereg.xls 
