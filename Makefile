@@ -10,14 +10,18 @@ CODE = code
 OUT = out
 FIGS = out/figs
 TABS = out/tabs
+LOG = log
 
 .PHONY: cleanlogs
 cleanlogs:
-	rm -f log/*
+	rm -f $(LOG)/*
 
 .PHONY: cleandtas
 cleandtas:
 	rm -f $(DTA)/*
+
+$(PAPER)/paper.pdf: $(PAPER)/paper.tex
+	latexmk $<
 
 CPI_DTAS = $(DTA)/cpi_quarter.dta $(DTA)/cpi_year.dta
 $(CPI_DTAS): $(CODE)/aux_cpi.do $(RAW)/CPILFESL.csv
@@ -45,7 +49,7 @@ $(RAW)/statereg.xls:
 	curl https://www2.census.gov/programs-surveys/popest/geographies/2011/state-geocodes-v2011.xls -o $@
 
 $(RAW)/zipcty.csv $(RAW)/pumacty.csv: $(CODE)/aux_getcrosswalks.py
-	python3 $@
+	python3 $<
 
 CROSSWALK_OUT = zip2cty puma2cty cty2cz puma2cz zip2cz state2reg cz2state
 CROSSWALKS = $(CROSSWALK_OUT:%=$(DTA)/%_crosswalk.dta)
